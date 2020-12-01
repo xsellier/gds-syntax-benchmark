@@ -57,6 +57,12 @@ func run(junk):
 	bigarray = []
 	bigarray.resize(1e6)
 	timeit("warmup", true)
+	compare_funcs_time("int_incr", "int_increq")
+	compare_funcs_time("dictwr_point", "dictwr_var")
+	compare_funcs_time("dictwr_string", "dictwr_point")
+	compare_funcs_time("dictread_point", "dictread_var")
+	compare_funcs_time("dictread_string", "dictread_point")
+	compare_funcs_time("array_append", "array_pushback")
 	compare_funcs_time("array_append", "array_index")
 	compare_funcs_time("array_len", "array_size")
 	compare_funcs_time("array_front", "array_izero")
@@ -116,6 +122,20 @@ func compare_funcs_time(funcname1, funcname2):
 
 func warmup():
 	for i in 1e6: pass
+
+func int_incr():
+	  var a = 0
+	  for i in 1e6:
+		    a = a + 1
+
+func int_increq():
+	  var a = 0
+	  for i in 1e6:
+	    	a += 1
+
+func array_pushback():
+	  var a = []
+	  for i in 1e6: a.push_back(0)
 
 func array_append():
 	var a : Array = []
@@ -232,7 +252,49 @@ func arrayeval_auto():
 	var a : Array = []
 	for i in 1e6:
 		if a: pass
-		
+
+
+func dictwr_var():
+	  var d = {test=0}
+	  var key = 'test'
+
+	  for i in 1e6:
+		d[key] += 1
+
+func dictwr_string():
+	var d = {test=0}
+
+	for i in range(1e6):
+		d['test'] += 1
+
+func dictwr_point():
+	var d = {test=0}
+
+	for i in 1e6:
+	    d.test += 1
+
+func dictread_var():
+	  var d = {test=0}
+	  var key = 'test'
+
+	  for i in 1e6:
+		if d[key] == 0:
+			pass
+
+func dictread_string():
+	var d = {test=0}
+
+	for i in 1e6:
+		if d['test'] == 0:
+		      pass
+
+func dictread_point():
+	var d = {test=0}
+
+	for i in 1e6:
+		if d.test == 0:
+		      pass
+
 func dicteval():
 	var d : Dictionary = {0:0}
 	for i in 1e6:
